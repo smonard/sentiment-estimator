@@ -1,8 +1,8 @@
 import json
 import collections
-from sentiment_classifier import BasicSentimentClassifier
+from sentiment_classifier import SentimentClassifier
 
-def extract_data(path='../data/full_tagged_data.json'):
+def extract_data(path='../../spanish-corpus/sentiment-analysis/full_tagged_data.json'):
     with open(path, 'r') as file:
         data = file.read()
     train_data_raw = json.loads(data)
@@ -19,10 +19,10 @@ def split_data(X, y, cutpoint=0.9):
     return (x_train, y_train), (x_test, y_test)
 
 def fit_models(X, y):
-    nn_classifier = BasicSentimentClassifier.newinstance('nn')
-    nn_classifier.fit(X,y)
-    nb_classifier = BasicSentimentClassifier.newinstance('nb')
-    nb_classifier.fit(X,y)
+    nn_classifier = SentimentClassifier.newinstance('nn')
+    nn_classifier.fit(X, y)
+    nb_classifier = SentimentClassifier.newinstance('nb')
+    nb_classifier.fit(X, y)
     return nn_classifier, nb_classifier
 
 def score_models(nn, naive, X_t, y_t):

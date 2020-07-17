@@ -10,7 +10,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import ComplementNB
 from keras.models import load_model    
 
-class BasicSentimentClassifier:
+class SentimentClassifier:
     def __init__(self, vectorizer_path, selector_path):
         self.__nlp = spacy.load('es_core_news_sm')
         self.__vectorizer_path, self.__selector_path = vectorizer_path, selector_path
@@ -65,7 +65,7 @@ class BasicSentimentClassifier:
         return NeuralNetworkSentimentClassifier(context_path=context_path) if modeltype == 'nn' else NaiveBayesSentimentClassifier(context_path=context_path)
     
     
-class NeuralNetworkSentimentClassifier(BasicSentimentClassifier):
+class NeuralNetworkSentimentClassifier(SentimentClassifier):
     def __init__(self, vectorizer_path = 'vectorizer.obj', selector_path = 'selector.obj', model_path = 'model_clf_nn.obj', context_path='/'):
         self.__model_path = context_path + model_path
         try:
@@ -117,7 +117,7 @@ class NeuralNetworkSentimentClassifier(BasicSentimentClassifier):
         y = keras.utils.to_categorical(y, output)
         return self._model_clf.evaluate(X, y)[1]
 
-class NaiveBayesSentimentClassifier(BasicSentimentClassifier):
+class NaiveBayesSentimentClassifier(SentimentClassifier):
     def __init__(self, vectorizer_path = 'vectorizernb.obj', selector_path = 'selectornb.obj', model_path = 'model_clf_bayes.obj', context_path='./'):
         self.__model_path = context_path + model_path
         try:
